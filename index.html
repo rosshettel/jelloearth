@@ -58,7 +58,7 @@
 		force.gravity(0)
 			.nodes(nodes)
 			.links(links)
-			.linkDistance(function(d) { console.log(d);return d.distance; })
+			.linkDistance(function(d) { return d.distance; })
 			.start();
 
 		var link = svg.selectAll("line")
@@ -84,8 +84,8 @@
 				.attr("x2", function(d) { return d.target.x; })
 				.attr("y2", function(d) { return d.target.y; });
 
-			node.attr("transforn", function(d) {
-				return "translate("+ d.x +","+ d.y +")";
+			node.attr("transform", function(d) {
+				return "translate(" + d.x + "," + d.y + ")";
 			});
 		});
 	});
