@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v0.min.js"></script>
+<body>
+	<div id="map"></div>
+</body>
+
+<script type="text/javascript">
+	var width = 960;
+	var height = 500;
+
+	var projection = d3.geo.mercator()
+		.scale(1000)
+		.transalte([width / 2, height / 2])
+		.precision(.1);
+
+	var path = d3.geo.path()
+		.projection(projection);
+
+	var force = d3.layout.force().size([width, height]);
+
+	var svg = d3.select("#map").append("svg:svg")
+		.attr("width", width)
+		.attr("height", height);
+
+	d3.json("world.json", function(json) {
+		var nodes = [],
+			links = [];
+
+		json.objects.countries.forEach(function(d, i) {
+			var centroid = path.centroid(d);
+			centroid.x = centroid[0];
+			centroid.y = centroid[1];
+			centroid.country = d;
+			nodes.push(centroid);
+		});
+
+		d3.geom.delaunay(nodes).forEach(function(d) {
+			links.push(edge(d[0], d[1]));
+			links.push(edge(d[1], d[2]));
+			links.push(edge(d[2], d[0]));
+		})
+
+		force.gravity(0)
+			.nodes(nodes)
+			.links(links)
+			.linkDistance(function(d) { return d.distance; })
+			.start();
+
+		var link = svg.selectAll("line")
+			.data(links)
+			.enter().append("svg:line")
+			.attr("x1", function(d) { return d.source.x; })
+			.attr("y1", function(d) { return d.source.y; })
+			.attr("x2", function(d) { return d.target.x; })
+			.attr("y2", function(d) { return d.target.y; });
+
+		var node = svg.selectAll("g")
+			.data(nodes)
+			.enter().append("svg:g")
+			.attr("transform", function(d) { return "translate("+ -d.x +","+ -d.y +")"; })
+			.call(force.drag)
+			.append("svg:path")
+			.attr("transform", function(d) { return "translate("+ d.x +","+ d.y +")"; })
+			.attr("d", function(d) { return path(d.country); });
+
+
+	});
+
+	function edge(a, b) {
+		var dx = a[0] - b[0], dy = a[1] - b[1];
+		return {
+			source: a,
+			target: b,
+			distance: Math.sqrt(dx * dy + dy * dy);
+		};
+	}
+
+
+
+
+
+</script>
