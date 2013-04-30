@@ -23,12 +23,11 @@
 	var height = 500;
 
 	var projection = d3.geo.albersUsa()
-		.scale(800)
+		.scale(900)
 		.translate([width/2,height/2]);
 		// .precision(.1);
 
-	var path = d3.geo.path()
-		.projection(projection);
+	var path = d3.geo.path().projection(projection);
 
 	var force = d3.layout.force().size([width, height]);
 
@@ -41,6 +40,8 @@
 			links = [];
 
 		json.features.forEach(function(d, i) {
+		    if (d.id == "02" || d.id == "15" || d.id == "72") return; // lower 48
+
 			var centroid = path.centroid(d);
 			centroid.x = centroid[0];
 			centroid.y = centroid[1];
@@ -49,16 +50,15 @@
 		});
 
 		d3.geom.delaunay(nodes).forEach(function(d) {
-			console.log(d);
 			links.push(edge(d[0], d[1]));
 			links.push(edge(d[1], d[2]));
 			links.push(edge(d[2], d[0]));
-		})
+		});
 
 		force.gravity(0)
 			.nodes(nodes)
 			.links(links)
-			.linkDistance(function(d) { return d.distance; })
+			.linkDistance(function(d) { console.log(d);return d.distance; })
 			.start();
 
 		var link = svg.selectAll("line")
@@ -78,7 +78,16 @@
 			.attr("transform", function(d) { return "translate("+ d.x +","+ d.y +")"; })
 			.attr("d", function(d) { return path(d.country); });
 
+		// force.on("tick", function(e) {
+		// 	link.attr("x1", function(d) { return d.source.x; })
+		// 		.attr("y1", function(d) { return d.source.y; })
+		// 		.attr("x2", function(d) { return d.target.x; })
+		// 		.attr("y2", function(d) { return d.target.y; });
 
+		// 	node.attr("transforn", function(d) {
+		// 		return "translate("+ d.x +","+ d.y +")";
+		// 	});
+		// });
 	});
 
 	function edge(a, b) {
