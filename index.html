@@ -20,12 +20,12 @@
 
 <script type="text/javascript">
 	var width = 1200;
-	var height = 900;
+	var height = 600;
 
 	//create a mercator projection
 	//the scale needs to be at least 600, or the distance between africa's countries becomes huge
-	var projection = d3.geo.mercator()
-		.scale(650)
+	var projection = d3.geo.equirectangular()
+		.scale(750)
 		.translate([width/2,height/2]);
 
 	var path = d3.geo.path().projection(projection);
@@ -101,7 +101,7 @@
 	});
 
 	//manually scale out the g element so we can see the whole world
-	g.attr("transform", "translate(425,400) scale(0.3, 0.3)");
+	g.attr("transform", "translate(425,200) scale(0.27, 0.27)");
 
 	//calculates the distance between two points, and returns an object with that info
 	function edge(a, b) {
