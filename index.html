@@ -78,16 +78,16 @@
 			.attr("transform", function(d) { return "translate("+ d.x +","+ d.y +")"; })
 			.attr("d", function(d) { return path(d.country); });
 
-		// force.on("tick", function(e) {
-		// 	link.attr("x1", function(d) { return d.source.x; })
-		// 		.attr("y1", function(d) { return d.source.y; })
-		// 		.attr("x2", function(d) { return d.target.x; })
-		// 		.attr("y2", function(d) { return d.target.y; });
+		force.on("tick", function(e) {
+			link.attr("x1", function(d) { return d.source.x; })
+				.attr("y1", function(d) { return d.source.y; })
+				.attr("x2", function(d) { return d.target.x; })
+				.attr("y2", function(d) { return d.target.y; });
 
-		// 	node.attr("transforn", function(d) {
-		// 		return "translate("+ d.x +","+ d.y +")";
-		// 	});
-		// });
+			node.attr("transforn", function(d) {
+				return "translate("+ d.x +","+ d.y +")";
+			});
+		});
 	});
 
 	function edge(a, b) {
@@ -95,7 +95,7 @@
 		return {
 			source: a,
 			target: b,
-			distance: Math.sqrt(dx * dy + dy * dy)
+			distance: Math.sqrt(dx * dx + dy * dy)
 		};
 	}
 
