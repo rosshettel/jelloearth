@@ -1,19 +1,27 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/topojson.v0.min.js"></script>
-<style type="text/css">
-	path {
-		fill: steelblue;
-		fill-opacity: .7;
-		stroke: white;
-		stroke-width: 1px;
-	}
+<html>
+<header>
+	<title>Jello World</title>
+	<meta propert="og:title" content="Jello World">
+	<meta property="og:url" content="http://www.rosshettel.com/worldphysics">
+	<meta property="og:type" content="website">
+	<meta property="og:description" content="Imagine if, instead of rock, the Earth's mantle made out jello. It would kind of act like this. Just click on a continent and drag.">
 
-	line {
-		stroke: gray;
-	}
-</style>
+	<meta charset="utf-8">
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://d3js.org/topojson.v0.min.js"></script>
+	<style type="text/css">
+		path {
+			fill: steelblue;
+			fill-opacity: .7;
+			stroke: white;
+			stroke-width: 1px;
+		}
+
+		line {
+			/*stroke: gray;*/
+		}
+	</style>
 <body>
 	<div id="map"></div>
 </body>
@@ -112,9 +120,5 @@
 			distance: Math.sqrt(dx * dx + dy * dy)
 		};
 	}
-
-
-
-
-
 </script>
+<html>
